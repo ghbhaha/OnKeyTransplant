@@ -33,8 +33,8 @@ $ sudo chmod 777 *.sh tools -R
 
 
 ###联系我 contact me
-my email :1.[我的邮箱](464095417@qq.com)<br/>
-2.[my blog 我的新浪博客](http://blog.sina.com.cn/u/2641690453)<br/>
+my email :464095417@qq.com<br/>
+[my blog 我的新浪博客](http://blog.sina.com.cn/u/2641690453)<br/>
 my weibo :
 [![image]](http://weibo.com/u/2641690453)
 [image]: http://tp2.sinaimg.cn/2641690453/180/22849477815/1 "github"
