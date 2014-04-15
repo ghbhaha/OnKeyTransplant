@@ -96,11 +96,13 @@ sleep 1
 echo
 cp ./$OS/boot.img ./${OS}boot.img
 cp ./offcial/boot.img ./offcialboot.img
+read -p "你要一直什么平台的ROM?  1 : MTK   2: 高通  "  arm
+case $arm in
+	1 ) 
 ./tools/unpack-MT65xx.pl ./${OS}boot.img
-
-echo
-echo
 ./tools/unpack-MT65xx.pl ./offcialboot.img
+echo
+echo
 echo
 echo
 echo "即将打开两个文件对比，请将官方包里的init.rc中的BOOTCLASSPATH 对比$OS中的替换"
@@ -111,12 +113,33 @@ echo
 sleep 2
 bcompare ${OS}boot.img-ramdisk/init.rc offcialboot.img-ramdisk/init.rc
 ./tools/repack-MT65xx.pl -boot offcialboot.img-kernel.img offcialboot.img-ramdisk boot.img 
-rm ./$OS/boot.img
-mv boot.img ./$OS/
 rm -rf ${OS}boot.img-ramdisk
 rm -rf offcialboot.img-ramdisk
 rm offcialboot.img-kernel.img
 rm ${OS}boot.img-kernel.img
+		;;
+	2 )
+./tools/mkboot ./${OS}boot.img ${OS}boot
+./tools/mkboot ./offcialboot.img offcialboot
+echo
+echo
+echo
+echo
+echo "即将打开两个文件对比，请将官方包里的init.rc中的BOOTCLASSPATH 对比$OS中的替换"
+echo "注意（mtk的init.rc有两到三个BOOTCLASSPATH，都需要替换）"
+echo
+echo
+echo
+sleep 2
+bcompare ${OS}boot/ramdisk/init.rc offcialboot/ramdisk/init.rc
+./tools/mkboot offcialboot boot.img 
+rm -rf ${OS}boot
+rm -rf offcialboot
+		;;
+esac
+
+rm ./$OS/boot.img
+mv boot.img ./$OS/
 rm ${OS}boot.img
 rm offcialboot.img
 echo "boot.img修改完成，现在开始修改modules...."
