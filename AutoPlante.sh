@@ -176,7 +176,22 @@ echo "开始移植音频系统....."
 sleep 1
 cp ./offcial/system/lib/libaudio.primary.default.so ./$OS/system/lib
 echo
-echo "请在打开的文本编辑器中删掉开头的验证信息"
+echo
+# YUN ADD 20140415
+echo "开始移植sensor系统"
+cp ./offcial/system/lib/libsensorservice.so ./$OS/system/lib
+echo
+echo
+echo
+read -p "是否需要去掉官方recovery刷写?" flashrecovery
+echo
+echo
+echo
+if [ "$flashrecovery" == "y" ] || [ "$flashrecovery" == "Y" ]; then
+	rm -rf ./$OS/recovery
+fi
+echo "请在打开的文本编辑器中删掉开头的验证信息以及recovery刷写信息"
+#YUN END
 echo
 echo
 echo
