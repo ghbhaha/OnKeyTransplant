@@ -22,8 +22,8 @@ count=0
 
     echo >> temp.list
     if [ "$location" == "BasePackage" ]; then
-    	echo "可用的第三方ROM底包有: " >> temp.list
-    else echo "可用的官方ROM包有:" >> temp.list
+    	echo "可用的第三方ROM底包有:    " >> temp.list
+    else echo "可用的官方ROM包有:     " >> temp.list
     fi
     
     echo >> temp.list
@@ -45,8 +45,8 @@ count=0
 
     echo
     if [ "$location" == "BasePackage" ]; then
-    	echo -n "请选择底包 (默认1, 取消 0 ， 刷新 请按R): "
-    else echo -n "请选择官方包 (默认1, 取消 0 ， 刷新 请按R): "
+    	echo -n "请选择底包 (默认1, 取消 0 ， 刷新 请按R):   "
+    else echo -n "请选择官方包 (默认1, 取消 0 ， 刷新 请按R):    "
     fi
     
 

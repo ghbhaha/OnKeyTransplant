@@ -47,25 +47,6 @@ echo
 echo "准备好了啊？"
 echo
 read -p "请按任意键继续" any
-#for (( i = 0; i < 1000; i++ )); do
-#	cd ./OffcialPackage
-#	if [ ! -f "*.zip" ]; then
-# 	echo "没有发现官方包……你玩我呢？"
-# 	OffcialPackage=1
-#	fi
-#	cd ../BasePackage
-#	if [ ! -f "*.zip" ]; then
-#  	echo "没有发现$OS包……你玩我呢？"
-#  	BasePackage=1
-#	fi
-#	cd ../
-#	if [ "$BasePackage" != 1 ] && [ "$OffcialPackage" != 1 ]; then
-#		break 
-#	fi
-#	echo
-#	echo
-#	read -p "请将官方包或者 $OS底包放入相应文件夹!!!" dasdsa
-#done
 rm -rf $OS offcial 2>/dev/null
 mkdir $OS
 mkdir offcial
@@ -124,15 +105,26 @@ rm ${OS}boot.img-kernel.img
 echo
 echo
 echo
-echo
-echo "即将打开两个文件对比，请将官方包里的init.rc中的BOOTCLASSPATH 对比$OS中的替换"
-echo "注意（mtk的init.rc有两到三个BOOTCLASSPATH，都需要替换）"
+echo "开始自动移植boot.img......"
 echo
 echo
 echo
-sleep 2
-bcompare ${OS}boot/ramdisk/init.rc offcialboot/ramdisk/init.rc
+sleep 1
+#YUN BEGIN
+cat ./${OS}boot/ramdisk/init.rc | grep "export BOOTCLASSPATH" > OSBOOTCLASSPATH
+cat ./offcialboot/ramdisk/init.rc | grep "export BOOTCLASSPATH" > offcialBOOTCLASSPATH
+sed -i 's/\//\\\//g' OSBOOTCLASSPATH
+sed -i 's/\//\\\//g' offcialBOOTCLASSPATH
+offcialjar=`cat offcialBOOTCLASSPATH`
+OSjar=`cat OSBOOTCLASSPATH`
+echo $offcialjar
+echo $OSjar
+sed -i 's/\'"$offcialjar"'/\'"$OSjar"'/' ./offcialboot/ramdisk/init.rc
+#YUN END
+compare ${OS}boot/ramdisk/init.rc offcialboot/ramdisk/init.rc
 ./tools/mkboot offcialboot boot.img 
+rm OSBOOTCLASSPATH
+rm offcialBOOTCLASSPATH
 rm -rf ${OS}boot
 rm -rf offcialboot
 		;;
@@ -206,7 +198,7 @@ cp ./offcial/system/lib/libsensorservice.so ./$OS/system/lib
 echo
 echo
 echo
-read -p "是否需要去掉官方recovery刷写?" flashrecovery
+read -p "是否需要去掉官方recovery刷写?(y/n):   " flashrecovery
 echo
 echo
 echo

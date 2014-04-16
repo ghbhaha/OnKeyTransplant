@@ -38,3 +38,15 @@ my email :464095417@qq.com<br/>
 my weibo :
 [![image]](http://weibo.com/u/2641690453)
 [image]: http://tp2.sinaimg.cn/2641690453/180/22849477815/1 "github"
+
+
+
+###更新日志
+20140416
+add msm onekey modify bootimage
+20140415
+fix sound bugs
+fix recovery flash
+fix sensor not working
+add other UI 
+fix msm bootimg plants
