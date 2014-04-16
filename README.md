@@ -42,11 +42,11 @@ my weibo :
 
 
 ###更新日志
-20140416
-add msm onekey modify bootimage
-20140415
-fix sound bugs
-fix recovery flash
-fix sensor not working
-add other UI 
-fix msm bootimg plants
+20140416  
+add msm onekey modify bootimage  
+20140415  
+fix sound bugs  
+fix recovery flash  
+fix sensor not working  
+add other UI   
+fix msm bootimg plants  
