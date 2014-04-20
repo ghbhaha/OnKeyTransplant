@@ -7,7 +7,7 @@ PATH=/bin:/sbin:/usr/bin:usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
 DATE=`date "+%Y%m%d%H%M%S" `
-
+version=1.1
 
 if [ ! -d "OffcialPackage" ]; then
   	mkdir OffcialPackage
@@ -36,13 +36,14 @@ case $OS in
 esac
 echo 
 
-echo "===========================欢迎使用$OS一键移植工具========================"
-echo
+echo "===========================欢迎使用$OS一键移植工具 V $version==================="
+echo									
 echo "请将$OS包放置于BasePackage中 将官方包放置于OffcialPackage中"
 echo "整个过程中，你可能需要手动对比修改三四个文件"
 echo "所以你需要beyond compare软件"
 echo ""
 echo  
+echo "============================================================================="
 echo
 echo "准备好了啊？"
 echo
@@ -134,6 +135,15 @@ rm ./$OS/boot.img
 mv boot.img ./$OS/
 rm ${OS}boot.img
 rm offcialboot.img
+#modify auto write build.prop
+cat ./${OS}/system/build.prop | grep lewa.version >> ./offcial/system/build.prop
+sed -i '/^ro.lewa.version/r tools/buildprop' ./offcial/system/build.prop  
+read -p "what your phone model? " model
+sed -i '/^ro.lewa.version/i\'"ro.lewa.device=$model"'' ./offcial/system/build.prop
+rm ./$OS/system/build.prop
+cp ./offcial/system/build.prop ./$OS/system/build.prop
+exit 
+#end build prop modify
 echo "boot.img修改完成，现在开始修改modules...."
 cp -r ./offcial/system/lib/modules ./$OS/system/lib
 echo
@@ -155,8 +165,13 @@ sleep 1
 echo 
 echo
 echo
-cp ./offcial/system/lib/camera.default.so ./$OS/system/lib/
-cp ./offcial/system/lib/libcam*.so ./$OS/system/lib/
+cp ./offcial/system/lib/camera.default.so ./$OS/system/lib/ 2>/dev/null
+cp ./offcial/system/lib/libcam*.so ./$OS/system/lib/ 2>/dev/null
+#modify by yun for msm8226
+cp ./offcial/system/lib/libmm-qcamera.so ./$OS/system/lib/ 2>/dev/null
+cp ./offcial/system/lib/libmm-qcamera_interface.so ./$OS/system/lib/ 2>/dev/null
+cp ./offcial/system/lib/camera.msm8226.so ./OS/system/lib/ 2>/dev/null
+#modify end
 echo
 echo
 echo "相机移植完成,开始移植电话，FM，radio系统"
@@ -180,8 +195,8 @@ echo
 echo
 cp ./offcial/system/lib/libreference-ril.so ./$OS/system/lib
 cp ./offcial/system/lib/libril*.so ./$OS/system/lib
-cp ./offcial/system/lib/libutilrilmtk.so ./$OS/system/lib
-cp ./offcial/system/lib/mtk-ril*.so ./$OS/system/lib
+cp ./offcial/system/lib/libutilrilmtk.so ./$OS/system/lib 2>/dev/null
+cp ./offcial/system/lib/mtk-ril*.so ./$OS/system/lib 2>/dev/null
 echo
 echo
 echo
@@ -214,15 +229,6 @@ bcompare ./$OS/META-INF/com/google/android/updater-script ./offcial/META-INF/com
 echo
 echo
 echo
-echo "请在打开的文本编辑器中对比修改成自己的机型文件"
-echo
-sleep 1
-echo
-echo
-echo
-bcompare ./$OS/system/build.prop ./offcial/system/build.prop
-sleep 1
-bcompare ./$OS/system/etc/custom.conf ./offcial/system/etc/custom.conf
 echo
 echo
 echo "大部分工作移植完成，现在开始打包测试......"
