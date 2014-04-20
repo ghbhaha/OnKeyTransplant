@@ -42,8 +42,8 @@ my weibo :
 
 
 ###更新日志
-20140142
-add build.prop Autoplant
+20140142  
+add build.prop Autoplant  
 20140420
 add msm8226 camera support  
 20140416  
